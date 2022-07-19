@@ -82,19 +82,20 @@ func ExpectPanicErrEq(t *T, text string, msg ...string) {
 	}
 }
 
-func ExpectEq[V comparable](t *T, v1, v2 V, msg ...string) {
-	ExpectEqf(t, v1, v2, "%v", msg...)
+func ExpectEq[Value comparable](t *T,
+	actual, expected Value, msg ...string) {
+	ExpectEqf(t, actual, expected, "%v", msg...)
 }
 
-func ExpectEqf[V comparable](t *T,
-	v1, v2 V, format string, msg ...string) {
-	if v1 != v2 {
-		signalError(t, v1, v2, format, getMsg(msg...))
+func ExpectEqf[Value comparable](t *T,
+	actual, expected Value, format string, msg ...string) {
+	if actual != expected {
+		signalError(t, actual, expected,
+			format, getMsg(msg...))
 	}
 }
 
-func signalError(t *T,
-	v1, v2 any, format, msg string) {
+func signalError(t *T, v1, v2 any, format, msg string) {
 	f := fmt.Sprintf(outputTemplate, msg, format, format)
 	t.Errorf(f, v1, v2)
 }
