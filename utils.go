@@ -95,6 +95,14 @@ func ExpectEqf[Value comparable](t *T,
 	}
 }
 
+func ExpectDeepEq(t *T,
+	actual, expected any, msg ...string) {
+	if !reflect.DeepEqual(actual, expected) {
+		signalError(t, actual, expected,
+			"%v", getMsg(msg...))
+	}
+}
+
 func signalError(t *T, v1, v2 any, format, msg string) {
 	f := fmt.Sprintf(outputTemplate, msg, format, format)
 	t.Errorf(f, v1, v2)
