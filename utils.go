@@ -7,10 +7,6 @@ import (
 )
 
 const (
-	BinByte     = "%08b"
-	HexByte     = "%#02x"
-	TwoHexBytes = "%#04x"
-
 	setupFuncName      = "Setup"
 	testPanickedFormat = "test panicked:\n%s"
 	noPanicText        = " (panic didn't return error)"
