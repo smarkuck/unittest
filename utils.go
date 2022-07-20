@@ -69,12 +69,12 @@ func recoverOnFail(t *T) {
 }
 
 func ExpectPanicErrEq(t *T, text string, msg ...string) {
-	switch v := recover().(type) {
+	switch err := recover().(type) {
 	case error:
-		ExpectEq(t, v.Error(), text, msg...)
+		ExpectEq(t, err.Error(), text, msg...)
 	default:
 		msg := getMsg(msg...) + noPanicText
-		signalError(t, v, text, "%v", msg)
+		signalError(t, msg, "%v", err, text)
 	}
 }
 
@@ -86,22 +86,22 @@ func ExpectEq[Value comparable](t *T,
 func ExpectEqf[Value comparable](t *T,
 	actual, expected Value, format string, msg ...string) {
 	if actual != expected {
-		signalError(t, actual, expected,
-			format, getMsg(msg...))
+		signalError(t, getMsg(msg...), format,
+			actual, expected)
 	}
 }
 
 func ExpectDeepEq(t *T,
 	actual, expected any, msg ...string) {
 	if !reflect.DeepEqual(actual, expected) {
-		signalError(t, actual, expected,
-			"%v", getMsg(msg...))
+		signalError(t, getMsg(msg...), "%v, (%T)",
+			actual, actual, expected, expected)
 	}
 }
 
-func signalError(t *T, v1, v2 any, format, msg string) {
+func signalError(t *T, msg, format string, args ...any) {
 	f := fmt.Sprintf(outputTemplate, msg, format, format)
-	t.Errorf(f, v1, v2)
+	t.Errorf(f, args...)
 }
 
 func getMsg(msg ...string) string {
