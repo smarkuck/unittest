@@ -78,6 +78,14 @@ func ExpectPanicErrEq(t *T, text string, msg ...string) {
 	}
 }
 
+func ExpectTrue(t *T, value bool, msg ...string) {
+	ExpectEq(t, value, true, msg...)
+}
+
+func ExpectFalse(t *T, value bool, msg ...string) {
+	ExpectEq(t, value, false, msg...)
+}
+
 func ExpectEq[Value comparable](t *T,
 	actual, expected Value, msg ...string) {
 	ExpectEqf(t, actual, expected, "%v", msg...)
